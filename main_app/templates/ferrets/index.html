@@ -1,0 +1,36 @@
+text/css" href="{% static 'css/ferret-index.css' %}"/>
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+  <h1>Cat List</h1>
+  <img src="{% static 'images/cool-ferret.svg' %}" alt="A cool ferret" />
+  <img src="{% static 'images/happy-ferret.svg' %}" alt="A happy ferret" />
+  <img src="{% static 'images/teacup-ferret.svg' %}" alt="A ferret in a teacup" />
+  <img src="{% static 'images/ferret-in-box.svg' %}" alt="A ferret in a box" />
+</section>
+
+<section class="card-container">
+  {% for ferret in ferrets %}
+    <div class="card">
+      <div class="card-content">
+        <div class="card-img-container">
+          <img 
+            src="{% static 'images/sk8r-boi-ferret.svg' %}" 
+            alt="A skater boy ferret"
+          >
+        </div>
+        <h2 class="card-title">{{ ferret.name }}</h2>
+        {% if ferret.age > 0 %}
+          <p>A {{ ferret.age }} year old {{ ferret.breed }}</p>
+        {% else %}
+          <p>A {{ ferret.breed }} kitten.</p>
+        {% endif %}
+        <p><small>{{ ferret.description }}</small></p>
+      </div>
+    </div>
+  {% endfor %}
+</section>
+
+{% endblock %}
