@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from django.shortcuts import render
 
 class Ferret:  # Note that parens are optional if not inheriting from another class
@@ -18,7 +17,7 @@ ferrets = [
 
 # Create your views here.
 def home(request):
-  return HttpResponse('<h1>Hello Ferret Loving Friend!</h1>')
+  return render(request, 'home.html')
 
 
 def about(request):
@@ -27,3 +26,4 @@ def about(request):
 
 def ferrets_index(request):
   return render(request, 'ferrets/index.html', {'ferrets': ferrets})
+
