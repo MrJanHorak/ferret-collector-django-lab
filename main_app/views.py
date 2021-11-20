@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.shortcuts import render
+from .models import Ferret
 
 class Ferret:  # Note that parens are optional if not inheriting from another class
   def __init__(self, name, breed, description, age):
