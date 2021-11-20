@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link 
+  rel="stylesheet" 
+  type="text/css" 
+  href="{% static 'css/ferret-detail.css' %}"
+/>
+{% endblock %}
+
+{% block content %}
+
+<section class="ferret-container">
+  <div class="ferret-img">
+    <img 
+      src="{% static 'images/gangsta-ferret.jpg' %}" 
+      alt="Gangta Ferret Picture"
+    >
+  </div>
+  <div class="ferret-details">
+    <h1>{{ ferret.name }}</h1>
+    {% if ferret.age > 0 %}
+      <h2>A {{ ferret.age }} year old {{ ferret.breed }}</h2>
+    {% else %}
+      <h2>A {{ ferret.breed }} kit.</h2>
+    {% endif %}
+    <p>{{ ferret.description }}</p>
+  </div>
+</section>
+
+{% endblock %}
+```
