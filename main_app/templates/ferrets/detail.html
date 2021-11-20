@@ -1,38 +1,89 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block head %}
-<link 
-  rel="stylesheet" 
-  type="text/css" 
+{% extends 'base.html' %} {% load static %} {% block head %}
+<link
+  href="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.css"
+  rel="stylesheet"
+/>
+<script src="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.js"></script>
+<link
+  rel="stylesheet"
+  type="text/css"
   href="{% static 'css/ferret-detail.css' %}"
 />
-{% endblock %}
-
-{% block content %}
+<script defer src="{% static 'js/ferret-detail.js' %}"></script>
+{% endblock %} {% block content %}
 
 <section class="ferret-container">
   <div class="ferret-img">
-    <img 
-      src="{% static 'images/gangsta-ferret.jpg' %}" 
+    <img
+      src="{% static 'images/gangsta-ferret.jpg' %}"
       alt="Gangsta Ferret Picture"
-      id = 'detail-pic'
-    >
+      id="detail-pic"
+    />
   </div>
   <div class="ferret-details">
     <h1>{{ ferret.name }}</h1>
     {% if ferret.age > 0 %}
-      <h2>A {{ ferret.age }} year old {{ ferret.breed }}</h2>
+    <h2>A {{ ferret.age }} year old {{ ferret.breed }}</h2>
     {% else %}
-      <h2>A {{ ferret.breed }} kit.</h2>
+    <h2>A {{ ferret.breed }} kit.</h2>
     {% endif %}
     <p>{{ ferret.description }}</p>
     <div class="ferret-actions">
       <a href="{% url 'ferrets_update' ferret.id %}" class="btn warn">Edit</a>
-      <a href="{% url 'ferrets_delete' ferret.id %}" class="btn danger">Delete</a>
+      <a href="{% url 'ferrets_delete' ferret.id %}" class="btn danger"
+        >Delete</a
+      >
     </div>
   </div>
 </section>
+<div class="feedings-toy-container">
+  <section class="feedings">
+    <div class="subsection-title">
+      <h2>Feedings</h2>
+      <img
+        src="{% static 'images/spoon-ferret.png' %}"
+        alt="A spoon carrying ferret"
+      />
+      <img
+        src="{% static 'images/ferret-banana.png' %}"
+        alt="A ferret on a banana"
+      />
+      <img
+        src="{% static 'images/ferret-french-food.png' %}"
+        alt="A french food eating ferret"
+      />
+    </div>
+    <h3>Add a Feeding</h3>
+    <form
+      action="{% url 'add_feeding' ferret.id %}"
+      method="post"
+      class="subsection-content"
+    >
+      {% csrf_token %} {{ feeding_form.as_p }}
+      <button type="submit" class="btn submit">Add Feeding</button>
+    </form>
+    <h3>Past Feedings</h3>
+    {% if ferret.feeding_set.all.count %}
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Meal</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for feeding in ferret.feeding_set.all %}
+        <tr>
+          <td>{{feeding.date}}</td>
+          <td>{{feeding.get_meal_display}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="subsection-content">{{ferret.name}} has never been fed 😟</p>
+    {% endif %}
+  </section>
+</div>
 
 {% endblock %}
-```

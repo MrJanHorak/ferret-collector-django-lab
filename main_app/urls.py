@@ -9,4 +9,5 @@ urlpatterns = [
   path('ferrets/create/', views.FerretCreate.as_view(), name='ferrets_create'),
   path('ferrets/<int:pk>/update/', views.FerretUpdate.as_view(), name='ferrets_update'),
   path('ferrets/<int:pk>/delete/', views.FerretDelete.as_view(), name='ferrets_delete'),
+  path('ferrets/<int:ferret_id>/add_feeding/', views.add_feeding, name='add_feeding'),
 ]

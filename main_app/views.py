@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import Ferret
+from .forms import FeedingsForm
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-
 
 # Create your views here.
 def home(request):
@@ -19,7 +19,16 @@ def ferrets_index(request):
 
 def ferrets_detail(request, ferret_id):
   ferret = Ferret.objects.get(id = ferret_id)
-  return render(request, 'ferrets/detail.html', {'ferret': ferret})
+  feeding_form = FeedingsForm()
+  return render(request, 'ferrets/detail.html', {'ferret': ferret, 'feeding_form': feeding_form})
+
+def add_feeding(request, ferret_id):
+  form = FeedingsForm(request.POST)
+  if form.is_valid():
+    new_feeding = form.save(commit=False)
+    new_feeding.ferret_id = ferret_id
+    new_feeding.save()
+  return redirect('ferrets_detail', ferret_id=ferret_id)
 
 class FerretCreate(CreateView):
   model = Ferret
