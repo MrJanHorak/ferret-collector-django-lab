@@ -15,7 +15,8 @@
   <div class="ferret-img">
     <img 
       src="{% static 'images/gangsta-ferret.jpg' %}" 
-      alt="Gangta Ferret Picture"
+      alt="Gangsta Ferret Picture"
+      id = 'detail-pic'
     >
   </div>
   <div class="ferret-details">
@@ -26,6 +27,10 @@
       <h2>A {{ ferret.breed }} kit.</h2>
     {% endif %}
     <p>{{ ferret.description }}</p>
+    <div class="ferret-actions">
+      <a href="{% url 'ferrets_update' ferret.id %}" class="btn warn">Edit</a>
+      <a href="{% url 'ferrets_delete' ferret.id %}" class="btn danger">Delete</a>
+    </div>
   </div>
 </section>
 

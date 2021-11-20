@@ -144,17 +144,17 @@ nav li {
 }
 
 .page-header img {
-  height: 40px;
+  height: 10px;
   margin-left:15px;
-}
+} 
 
 .page-header img:first-of-type {
   margin-left: 20px;
 }
 
 #logo-pic {
-  width: 200px;
-  margin-top: -15px;
+  width:70%;
+  margin-top: 0px;
 }
 
 @media only screen and (min-width: 768px) {
@@ -179,7 +179,7 @@ nav li {
 
   /* visual fix to help align logo */
   .header-logo-container {
-    padding-top: 3px;
+    padding-top:0px;
   }
 
   nav {
@@ -201,7 +201,7 @@ nav li {
   }
   
   .page-header img {
-    height: 50px;
+    height: 70px;
     margin-left:20px;
   }
   
@@ -246,7 +246,7 @@ nav li {
 
   .header-logo-container {
     /* visual fix to help align logo */
-    padding-top: 6px;
+    padding-top: 0px;
     width: 256px;
     height: 35px;
   }

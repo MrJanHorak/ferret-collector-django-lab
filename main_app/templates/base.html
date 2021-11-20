@@ -33,8 +33,9 @@
     </div>
     <nav>
       <ul>
-        <li><a href="/ferrets">All Ferrets</a></li>
-        <li><a href="/about">About</a></li>
+        <li><a href="{% url 'ferrets_index' %}">All Ferrets</a></li>
+        <li><a href="{% url 'ferrets_create' %}">Add a Ferret</a></li>
+        <li><a href="{% url 'about' %}">About</a></li>
       </ul>
     </nav>
   </header>
