@@ -17,4 +17,5 @@ urlpatterns = [
   path('toys/<int:pk>/delete/', views.ToyDelete.as_view(), name='toys_delete'),
   path('ferrets/<int:ferret_id>/add_feeding/', views.add_feeding, name='add_feeding'),
   path('ferrets/<int:ferret_id>/assoc_toy/<int:toy_id>/', views.assoc_toy, name='assoc_toy'),
+  path('ferrets/<int:ferret_id>/deassoc_toy/<int:toy_id>/', views.deassoc_toy, name='deassoc_toy'),
 ]
