@@ -19,8 +19,10 @@ def ferrets_index(request):
 
 def ferrets_detail(request, ferret_id):
   ferret = Ferret.objects.get(id = ferret_id)
+  toys_ferret_doesnt_have = Toy.objects.exclude(id__in = ferret.toys.all().values_list('id'))
+
   feeding_form = FeedingsForm()
-  return render(request, 'ferrets/detail.html', {'ferret': ferret, 'feeding_form': feeding_form})
+  return render(request, 'ferrets/detail.html', {'ferret': ferret, 'feeding_form': feeding_form, 'toys': toys_ferret_doesnt_have})
 
 def add_feeding(request, ferret_id):
   form = FeedingsForm(request.POST)
@@ -30,9 +32,14 @@ def add_feeding(request, ferret_id):
     new_feeding.save()
   return redirect('ferrets_detail', ferret_id=ferret_id)
 
+def assoc_toy(request, ferret_id, toy_id):
+  # Note that you can pass a toy's id instead of the whole object
+  Ferret.objects.get(id=ferret_id).toys.add(toy_id)
+  return redirect('ferrets_detail', ferret_id=ferret_id)
+
 class FerretCreate(CreateView):
   model = Ferret
-  fields = '__all__'
+  fields = ['name', 'breed', 'description', 'age']
 
 class FerretUpdate(UpdateView):
   model = Ferret
