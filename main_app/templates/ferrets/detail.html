@@ -59,7 +59,13 @@
       method="post"
       class="subsection-content"
     >
-      {% csrf_token %} {{ feeding_form.as_p }}
+      {% if ferret.fed_for_today %}
+      <p class="fed">{{ferret.name}} has been fed all their meals for today!</p>
+      {% else %}
+      <p class="unfed">{{ferret.name}} might be hungry!</p>
+      {% endif %} 
+      {% csrf_token %}
+      {{ feeding_form.as_p }}
       <button type="submit" class="btn submit">Add Feeding</button>
     </form>
     <h3>Past Feedings</h3>

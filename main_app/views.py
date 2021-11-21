@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Ferret
+from .models import Ferret, Toy
 from .forms import FeedingsForm
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -41,3 +41,21 @@ class FerretUpdate(UpdateView):
 class FerretDelete(DeleteView):
   model = Ferret
   success_url = '/ferrets/'
+
+class ToyCreate(CreateView):
+  model = Toy
+  fields = '__all__'
+
+class ToyList(ListView):
+  model = Toy
+
+class ToyDetail(DetailView):
+  model = Toy
+
+class ToyUpdate(UpdateView):
+  model = Toy
+  fields = ['name', 'color']
+
+class ToyDelete(DeleteView):
+  model = Toy
+  success_url = '/toys/'
