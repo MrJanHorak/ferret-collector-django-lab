@@ -26,11 +26,19 @@
     <a href="{% url 'ferrets_detail' ferret.id %}">
       <div class="card-content">
         <div class="card-img-container">
+        {% if ferret.photo.url %}
+          <img
+            src="{{ferret.photo.url}}"
+            alt="A photo of {{ferret.name}}"
+            class="usr-img"
+          />
+          {% else %}
           <img
             src="{% static 'images/gangsta-ferret.jpg' %}"
             alt="A skater boy ferret"
             id="ferret-pic-placeholder"
           />
+          {% endif %}
         </div>
         <h2 class="card-title">{{ ferret.name }}</h2>
         {% if ferret.age > 0 %}

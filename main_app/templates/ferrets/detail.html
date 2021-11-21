@@ -14,11 +14,19 @@
 
 <section class="ferret-container">
   <div class="ferret-img">
+    {% if ferret.photo.url %}
+      <img
+        src="{{ferret.photo.url}}"
+        alt="A photo of {{ferret.name}}"
+        class="usr-img"
+      >
+    {% else %}
     <img
       src="{% static 'images/gangsta-ferret.jpg' %}"
       alt="Gangsta Ferret Picture"
       id="detail-pic"
-    />
+    >
+    {% endif %}
   </div>
   <div class="ferret-details">
     <h1>{{ ferret.name }}</h1>
@@ -34,6 +42,20 @@
         >Delete</a
       >
     </div>
+    <h3>Change {{ ferret.name }}'s photo</h3>
+    <p id="file-name"></p>
+    <form
+      action="{% url 'add_photo' ferret.id %}"
+      enctype="multipart/form-data"
+      method="POST"
+    >
+    {% csrf_token %}
+    <label class="btn secondary">
+    Choose photo
+    <input type="file" name="photo-file" id="file-input">
+    </label>
+    <button type="submit" class="btn submit">Upload Photo</button>
+    </form>
   </div>
 </section>
 <div class="feedings-toy-container">
