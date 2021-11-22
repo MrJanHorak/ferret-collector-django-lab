@@ -1,8 +1,14 @@
+from django.http import request
 from django.shortcuts import render, redirect
 from .models import Ferret, Toy, Photo
 from .forms import FeedingsForm
 from django.views.generic import ListView, DetailView
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth.views import LoginView
 import uuid
 import boto3
 
@@ -11,22 +17,25 @@ S3_BASE_URL = 'https://s3.us-east-1.amazonaws.com/'
 BUCKET = 'my-very-happy-ferret-collector'
 
 # Create your views here.
-def home(request):
-  return render(request, 'home.html')
+# def home(request):
+#   return render(request, 'home.html')
 
 def about(request):
   return render(request, 'about.html')
 
+@login_required
 def ferrets_index(request):
-  ferrets = Ferret.objects.all()
+  ferrets = Ferret.objects.filter(user=request.user)
   return render(request, 'ferrets/index.html', {'ferrets': ferrets})
 
+@login_required
 def ferrets_detail(request, ferret_id):
   ferret = Ferret.objects.get(id = ferret_id)
   toys_ferret_doesnt_have = Toy.objects.exclude(id__in = ferret.toys.all().values_list('id'))
   feeding_form = FeedingsForm()
   return render(request, 'ferrets/detail.html', {'ferret': ferret, 'feeding_form': feeding_form, 'toys': toys_ferret_doesnt_have})
 
+@login_required
 def add_feeding(request, ferret_id):
   form = FeedingsForm(request.POST)
   if form.is_valid():
@@ -35,16 +44,19 @@ def add_feeding(request, ferret_id):
     new_feeding.save()
   return redirect('ferrets_detail', ferret_id=ferret_id)
 
+@login_required
 def assoc_toy(request, ferret_id, toy_id):
   # Note that you can pass a toy's id instead of the whole object
   Ferret.objects.get(id=ferret_id).toys.add(toy_id)
   return redirect('ferrets_detail', ferret_id=ferret_id)
 
+@login_required
 def deassoc_toy(request, ferret_id, toy_id):
   # Note that you can pass a toy's id instead of the whole object
   Ferret.objects.get(id=ferret_id).toys.remove(toy_id)
   return redirect('ferrets_detail', ferret_id=ferret_id)
 
+@login_required
 def add_photo(request, ferret_id):
   photo_file = request.FILES.get('photo-file', None)
   if photo_file:
@@ -62,32 +74,59 @@ def add_photo(request, ferret_id):
       print('An error occured uploading file to S3: %s' % err)
   return redirect('ferrets_detail', ferret_id=ferret_id)
 
-class FerretCreate(CreateView):
+def signup(request):
+  error_message = ''
+  if request.method == 'POST':
+    form = UserCreationForm(request.POST)
+    if form.is_valid():
+      user = form.save()
+      login(request, user)
+      return redirect('ferrets_index')
+    else:
+      error_message = 'Invalid sign up - try again'
+  form = UserCreationForm()
+  context = {'form':form, 'error_message': error_message}
+  return render(request, 'signup.html', context)
+
+class FerretCreate(LoginRequiredMixin, CreateView):
   model = Ferret
   fields = ['name', 'breed', 'description', 'age']
 
-class FerretUpdate(UpdateView):
+  def form_valid(self, form):
+    form.instance.user = self.request.user
+    return super().form_valid(form)
+
+
+class FerretUpdate(LoginRequiredMixin, UpdateView):
   model = Ferret
   fields = ['breed', 'description', 'age']
 
-class FerretDelete(DeleteView):
+
+class FerretDelete(LoginRequiredMixin, DeleteView):
   model = Ferret
   success_url = '/ferrets/'
 
-class ToyCreate(CreateView):
+
+class ToyCreate(LoginRequiredMixin, CreateView):
   model = Toy
   fields = '__all__'
 
-class ToyList(ListView):
+
+class ToyList(LoginRequiredMixin, ListView):
   model = Toy
 
-class ToyDetail(DetailView):
+
+class ToyDetail(LoginRequiredMixin, DetailView):
   model = Toy
 
-class ToyUpdate(UpdateView):
+class ToyUpdate(LoginRequiredMixin, UpdateView):
   model = Toy
   fields = ['name', 'color']
 
-class ToyDelete(DeleteView):
+class ToyDelete(LoginRequiredMixin, DeleteView):
   model = Toy
   success_url = '/toys/'
+
+class Home(LoginView):
+  template_name = 'home.html'
+
