@@ -3,7 +3,7 @@
   href="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.css"
   rel="stylesheet"
 />
-<script src="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.js"></script>
 <link
   rel="stylesheet"
   type="text/css"
@@ -43,7 +43,7 @@
       >
     </div>
     <h3>Change {{ ferret.name }}'s photo</h3>
-    <p id="file-name"></p>
+    <p id="file-name"> </p>
     <form
       action="{% url 'add_photo' ferret.id %}"
       enctype="multipart/form-data"

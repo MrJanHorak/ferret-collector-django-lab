@@ -194,17 +194,7 @@
 
 #file-name {
   margin-bottom: 10px;
-}
-
-#file-input {
-  overflow: hidden;
-  position: absolute;
-  width: 0.1px;
-  height: 0.1px;
-}
-
-#file-name {
-  margin-bottom: 10px;
+  height: auto;
 }
 
 #detail-pic {

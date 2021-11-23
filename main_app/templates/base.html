@@ -35,7 +35,7 @@
       <ul>
       {% if user.is_authenticated %}
         
-        <li><a href="{% url 'ferrets_index' %}">{{user.username}}'s Ferrets</a></li>
+        <li><a href="{% url 'ferrets_index' %}">All {{user.username}}'s Ferrets</a></li>
         <li><a href="{% url 'toys_index' %}">All Toys</a></li>
         <li><a href="{% url 'ferrets_create' %}">Add a Ferret</a></li>
         <li><a href="{% url 'toys_create' %}">Add a Toy</a></li>
